@@ -1,0 +1,10 @@
+backend-django/backend/env
+backend-django/backend/media
+backend-django/backend/venv
+backend-django/backend/travelsite/__pycache__
+backend-django/backend/travelsite/venv
+backend-django/backend/travelsite/.env
+backend-django/backend/cheki/__pycache__
+backend-django/backend/cheki/migrations
+backend-django/backend/posts/__pycache__
+backend-django/backend/posts/migrations

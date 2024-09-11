@@ -1,0 +1,103 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.div-heading {
+  display: flex;
+  flex-wrap:wrap;
+  align-items: center;
+  width: 100vw;
+  position: relative;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+.button-create-post {
+  position: absolute;
+  left: 100%;
+  transform: translateX(-100%);
+  border: none;
+  background-color: wheat;
+  padding: 5px 5px;
+
+}
+.heading {
+  position: absolute;
+  left:50%;
+  transform: translateX(-50%);
+}
+
+.post-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.posts{
+  display: inline-block;
+  border: 1px;
+  border-color: black;
+  border-style: solid;
+  border-radius: 10px;
+  margin: 1px 1px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+  background: white;
+
+}
+.posts:active{
+  opacity: 0.9;
+}
+.posts:hover{
+  transform: scale(1.05);
+  background-color: rgba(red, green, blue, 10%);
+}
+.post-image{
+  height: 350px;
+  width: 300px;
+  border: none;
+  border-radius: 9px 9px 0 0; 
+  object-fit: cover;  
+}
+.post-image:hover {
+
+}
+.post-video {
+  height: 350px;
+  width: 300px;
+  object-fit: cover;
+  border-radius: 9px;
+}
+
+.post-interact {
+  display:flex;
+  align-items: center;
+  flex-direction: column;  
+}
+.caption{
+  background: none;
+  margin-top: 10px;
+  align-self: top;
+}
+.heart-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px; /* Adjust size as needed */
+  color: #ccc; /* Default color */
+  transition: color 0.3s ease-in-out;
+}
+
+.heart-button.liked {
+  color: #e74c3c; /* Color when liked */
+}
+
+.delete-button { 
+  background:none; 
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+
+}
+
+

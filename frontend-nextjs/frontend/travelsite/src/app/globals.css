@@ -1,0 +1,51 @@
+
+.main-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 50px);
+  width: 100vw;
+  background-image: url(../../public/main_image.png);
+  background-size:cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+}
+
+.container-blur-box{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  height: 500px;
+  width: 700px;
+  background-color: rgba(255,255,255,14%);
+  backdrop-filter: blur(1px);
+  border-radius: 10px;
+}
+
+.container-text {
+  font-size: 26px;
+  font-weight:500; 
+  margin-bottom: 20px; 
+}
+
+.button-signin, .button-signup {
+  padding: 15px 30px; 
+  font-size: 18px; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  margin: 10px; 
+  align-self: center;
+}
+
+.button-signin {
+  background-color: #007bff; 
+  color: white; 
+}
+
+.button-signup {
+  background-color: #28a745; 
+  color: white; 
+}
