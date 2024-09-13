@@ -1,4 +1,3 @@
-
 from pathlib import Path
 import environ
 from datetime import timedelta
@@ -79,8 +78,6 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'http://192.168.29.150:3000',
-    'http://192.168.29.136:3000'
 
 ]
 CORS_ALLOW_CREDENTIALS = True
