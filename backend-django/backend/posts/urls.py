@@ -1,5 +1,5 @@
 from django.urls import path
-from posts.views import PostViewSet , UserPostView ,LikePost, likedPostsProfile
+from posts.views import PostViewSet , UserPostView ,LikePost, likedPostsProfile, homePageViewSet
 from rest_framework.routers import DefaultRouter
 from django.urls import include
 from django.conf import settings
@@ -15,6 +15,7 @@ urlpatterns = [
   path('deleteposts/<int:post_id>/', UserPostView.as_view(), name='deletepost'),
   path('likepost/<int:post_id>/', LikePost.as_view(), name='likepost'),
   path('likedposts/', likedPostsProfile.as_view(), name='likedposts'),
+  path('homepage/',homePageViewSet.as_view(), name='homepage'),
 
 
 ]

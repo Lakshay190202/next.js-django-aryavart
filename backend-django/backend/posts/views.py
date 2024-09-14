@@ -1,9 +1,10 @@
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import viewsets, status, generics
 from rest_framework.views import APIView
 from posts.models import Post
 from posts.serializers import PostSerializer
+from posts.pagination import HomePagePagination
 
 
 
@@ -84,11 +85,16 @@ class likedPostsProfile(APIView):
     return Response(serializer.data)
 
 class homePageViewSet(APIView):
-  permission_classes =[IsAuthenticated]
-
-  def post(self, request, *args, **kwargs):
+  permission_classes = [AllowAny]
+  def get(self, request, *args, **kwargs):
     user = request.user
-    user_interests =  user.interests.all()
-    posts = Post.objects.filter(type = user_interests)
-    serializer = PostSerializer(posts, many=True, context={'request': request})
-    return Response(serializer.data)
+    paginator = HomePagePagination()
+
+    if user.is_authenticated:
+       user_interests = user.interests.all()
+       posts = Post.objects.filter(type__in=user_interests).distinct()
+    else:
+      posts = Post.objects.order_by('-likes')
+    result_page = paginator.paginate_queryset(posts, request)
+    serializer = PostSerializer(result_page, many=True, context={'request': request})
+    return paginator.get_paginated_response(serializer.data)
