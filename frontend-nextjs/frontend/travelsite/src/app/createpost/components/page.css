@@ -32,6 +32,7 @@ input {
 
   background-color: transparent;
   border: 1px solid rgba(255, 255, 255, 0.5);
+
   padding: 10px;
   border-radius: 5px;
 }
@@ -41,20 +42,4 @@ p {
 }
 input[type="file"] {
   display: none;
-}
-.custom-file-upload {
-  display: inline-block;
-  padding: 10px;
-  cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 5px;
-  margin-top: 5px;
-  margin-left: 15px;
-}
-.custom-file-upload:hover {
-  background-color: rgba(255, 255, 255, 0.55);
-}
-.custom-file-upload:active {
-  opacity: 0.8;
 }

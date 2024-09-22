@@ -9,6 +9,9 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.http import Http404
+from django.shortcuts import get_object_or_404
+
 
 
 class SignupView(generics.CreateAPIView):
@@ -27,24 +30,24 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
         identifier = request.data.get('username')
         password = request.data.get('password')
-
-        if '@' in identifier:
-            user = CustomUser.objects.get(email=identifier)
-        else:
-            user = CustomUser.objects.get(username=identifier)
-
         try:
-            if check_password(password, user.password):
-                refresh = RefreshToken.for_user(user)
-                return Response({
-                    'refresh': str(refresh),
-                    'access': str(refresh.access_token),
-                    'id': user.id
-                })
+            if '@' in identifier:
+                user = get_object_or_404(CustomUser,email=identifier)
             else:
-                return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-        except CustomUser.DoesNotExist:
+                user = get_object_or_404(CustomUser,username=identifier)
+        except Http404:
             return Response({'error': "User doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
+        
+        if check_password(password, user.password):
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+                'id': user.id
+            }, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+        
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -70,10 +73,9 @@ class CustomTokenRefreshView(TokenRefreshView):
 class DeleteUser(APIView):
     permission_classes = [IsAuthenticated]
 
-    def delete(self, request):
+    def delete(self, request, user_id):
         user = request.user
-        user_id = request.data.get('user_id')
-
+        print(user)
         if user.id != user_id:
             return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
         try:

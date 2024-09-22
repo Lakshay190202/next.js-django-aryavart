@@ -8,7 +8,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id', 'user', 'image', 'video', 'caption', 'upload_time', 'is_hidden', 'image_url', 'video_url']
+        fields = ['id', 'user', 'image', 'video', 'caption', 'upload_time', 'is_hidden', 'image_url', 'video_url', 'likes']
     
     def get_image_url(self, obj):
         request = self.context.get('request')
@@ -21,3 +21,4 @@ class PostSerializer(serializers.ModelSerializer):
         if obj.video and request:
             return request.build_absolute_uri(obj.video.url)
         return None
+    

@@ -20,7 +20,6 @@ body {
   height: calc(100vh - 50px);
   width: 100vw;
   background-repeat: no-repeat;
-
   color: white;
 
 
@@ -31,32 +30,37 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: row;
-  height: 500px;
-  width: 700px;
+  flex-direction: column;
+  height: auto;
+  width: 500px;
   background-color: rgba(255,255,255,25%);
   backdrop-filter: blur(5px);
   border-radius: 10px;
-  margin-top: 50px;
   
 }
 .p-form{
-  padding-left: 10px ;
   font-size: 18px;
 }
 .form-group {
-  display:  flex;
-  justify-content: center;
-  flex-wrap: wrap;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-}
 
-.name-div ,.username-div, .email-div ,.password-div{
-  padding-left: 15px;
-  padding-right: 15px;
   
 }
 
+.name-div ,.username-div, .email-div ,.password-div{
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.name-div input,.username-div input, .email-div input ,.password-div input {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+}
 .button-submit{
   background-color: #007bff; 
   margin-top:60px;
@@ -66,4 +70,11 @@ body {
   font-size: 18px;
   padding: 15px 30px;
   cursor: pointer;
+}
+input[type="file"] {
+  display: none;
+}
+.custom-file-upload {
+  margin-left: 0px;
+  margin-top: 0px;
 }

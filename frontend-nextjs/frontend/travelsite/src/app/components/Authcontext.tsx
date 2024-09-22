@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 interface AuthContextProps {
   username: string;
@@ -9,6 +10,7 @@ interface AuthContextProps {
   errorMessage: string;
   setUsername: (username: string) => void;
   setPassword: (password: string) => void;
+  setErrorMessage: (errorMessage: string) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   refreshToken: () => Promise<void>;
   clearTimer: () => void;
@@ -55,16 +57,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.setItem('accesstoken', response.data.access);
       localStorage.setItem('refreshtoken', response.data.refresh);
       localStorage.setItem('User_id', response.data.id);
+      if (response.status === 200){
+        setTimer(setTimeout(refreshToken, 2 * 60 * 1000));
+        toast.success('Login successful');
+        router.push('/profile');
+      }
 
-      setTimer(setTimeout(refreshToken, 2 * 60 * 1000));
-    
-      router.push('/profile');
-      
     } catch (error) {
-      console.error('Login failed:', error);
-      setErrorMessage('Login failed');
-    }
-  };
+      if (axios.isAxiosError(error) && error.response) {
+        toast.error(error.response.data.error || 'An error occurred');
+      } else {
+        toast.error('An error occurred');
+      }
+    };
+  }
 
  /*useEffect(() => {
     const refreshtoken = localStorage.getItem('refreshtoken');
@@ -86,6 +92,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         handleSubmit,
         refreshToken,
         clearTimer,
+        setErrorMessage,
        
       }}
     >

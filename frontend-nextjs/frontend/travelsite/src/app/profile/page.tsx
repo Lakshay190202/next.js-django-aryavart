@@ -89,6 +89,8 @@ export default function Homepage() {
             'Content-Type': 'application/json'
           }
         });
+        console.log('Response from /posts/homepage/:', response.data);
+
 
         /*setPosts(response.data);*/
       
@@ -107,6 +109,7 @@ export default function Homepage() {
           ...post,
           liked:likedData[post.id] || false
         }));
+        console
                            
         const sortedposts = updatedPosts.sort((a: any, b: any) => 
           new Date(b.upload_time).getTime() - new Date(a.upload_time).getTime());

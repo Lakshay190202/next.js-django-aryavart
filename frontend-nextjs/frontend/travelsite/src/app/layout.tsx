@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "./components/Authcontext"; // Adjust the path as necessary
-import Header from "./components/header"; // Import the Header component
+import { AuthProvider } from "./components/Authcontext"; 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({
           <main>
             {children}
           </main>
+          <ToastContainer />
           <footer>
             {/* Your footer content here */}
           </footer>

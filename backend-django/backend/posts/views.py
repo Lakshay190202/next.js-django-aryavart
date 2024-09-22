@@ -35,7 +35,9 @@ class UserPostView(APIView):
     user = request.user
     posts = Post.objects.filter(user=user)
     serializer = PostSerializer(posts, many=True , context ={ 'request': request})
-    return Response(serializer.data)
+    serialized_data = serializer.data
+
+    return Response(serialized_data)
   
   def delete(self, request, *args, **kwargs):
     user = request.user
@@ -86,6 +88,7 @@ class likedPostsProfile(APIView):
 
 class homePageViewSet(APIView):
   permission_classes = [AllowAny]
+
   def get(self, request, *args, **kwargs):
     user = request.user
     paginator = HomePagePagination()
@@ -97,4 +100,14 @@ class homePageViewSet(APIView):
       posts = Post.objects.order_by('-likes')
     result_page = paginator.paginate_queryset(posts, request)
     serializer = PostSerializer(result_page, many=True, context={'request': request})
-    return paginator.get_paginated_response(serializer.data)
+    data = serializer.data
+    if user.is_authenticated:
+      for post in data:
+        post_instance = Post.objects.get(id=post['id'])
+        post['is_liked'] = post_instance.likes_by.filter(id=user.id).exists()
+    else:
+      for post in data:
+        post['is_liked'] = False
+
+
+    return paginator.get_paginated_response(data)
