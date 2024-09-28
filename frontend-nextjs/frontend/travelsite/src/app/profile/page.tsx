@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import ProtectedRouter from "../components/ProtectedRoute";
 import axios from "axios";
 import { useAuth } from "../components/Authcontext";
+import { toast } from "react-toastify";
 
 export default function Homepage() {
   const router = useRouter();
@@ -70,7 +71,11 @@ export default function Homepage() {
         alert('Post deleted successfully');
       }
     } catch (error: any) {
-      console.error(error.message);
+      if (axios.isAxiosError(error) && error.response) {
+        toast.error(error.response.data.error || 'Error occured while deleting post, try again later');
+      } else {
+        toast.error('Error occured while deleting post, try again later');
+      }
     }
   };
 
@@ -89,7 +94,7 @@ export default function Homepage() {
             'Content-Type': 'application/json'
           }
         });
-        console.log('Response from /posts/homepage/:', response.data);
+        console.log('Response from /posts/userposts/:', response.data);
 
 
         /*setPosts(response.data);*/
@@ -109,19 +114,22 @@ export default function Homepage() {
           ...post,
           liked:likedData[post.id] || false
         }));
-        console
                            
         const sortedposts = updatedPosts.sort((a: any, b: any) => 
           new Date(b.upload_time).getTime() - new Date(a.upload_time).getTime());
 
-        setPosts(sortedposts);
+      setPosts(sortedposts);
 
       } catch (error: any) {
-        console.error(error.message);
+        if (axios.isAxiosError(error) && error.response) {
+          toast.error(error.response.data.error || 'An error occurred');
+        } else {
+          toast.error('An error occurred');
+        }
       }
-    };
-    fetchPost();
-  }, [router]);
+    }
+  fetchPost();
+  }, []);
 
   const deleteUser = async (UserId: number) => {
     const token = localStorage.getItem('accesstoken');
@@ -162,7 +170,6 @@ export default function Homepage() {
         <div className="container">
           <div className="div-heading">
             <h1 className="heading">Your Profile</h1>
-            {errorMessage && <p>{errorMessage}</p>}
             <button className="button-create-post" onClick={create_post}>Upload</button>
             <button className="button-delete-user" onClick={ () => deleteUser(Number(localStorage.getItem('User_id')))}>Delete User</button>
           </div>

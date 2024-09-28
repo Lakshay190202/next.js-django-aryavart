@@ -94,8 +94,11 @@ class homePageViewSet(APIView):
     paginator = HomePagePagination()
 
     if user.is_authenticated:
-       user_interests = user.interests.all()
-       posts = Post.objects.filter(type__in=user_interests).distinct()
+      user_interests = user.interests.all()
+      if user_interests.exists():
+        posts = Post.objects.filter(type__in=user_interests).distinct()
+      else:
+        posts = Post.objects.order_by('-likes')[:10]
     else:
       posts = Post.objects.order_by('-likes')
     result_page = paginator.paginate_queryset(posts, request)

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import ProtectedRouter from "../components/ProtectedRoute"
 import { useAuth } from "../components/Authcontext";
 import './page.css';
+import { toast } from "react-toastify"
 
 export default function Homepage() {
   const router = useRouter();
@@ -51,6 +52,7 @@ export default function Homepage() {
   }
 
   useEffect(() => {
+
     const fetchPost = async () => {
       let token = localStorage.getItem('accesstoken');
       if (!token) {
@@ -67,30 +69,50 @@ export default function Homepage() {
           });
           console.log('Response from /posts/homepage/:', response.data);
 
-          const posts = response.data.map((post: any) => {
-            if (post.is_liked === true) {
-              setLikedPosts(prevLikedPosts => ({
-                ...prevLikedPosts,
-                [post.id]: true
-              }));
-            }
-            return {
-              ...post,
-              liked: post.is_liked || false,
-            };
-          });
           setPosts(posts);
-          console.log('posts shown');
         } catch (error: any) {
           setErrorMessage('Failed to fetch content, please try again');
         }
       } else {
-        setErrorMessage('Token is not available, please login again');
+        toast.error('Token is not available, please login again');
+        localStorage.clear();
+        router.push('/signin');
       }
     };
     fetchPost();
-  }, [refreshToken]);
-
+  }, []);
+  return (
+    <>
+      <Header />
+      <div className="container">
+        <div>
+          <div className="post-container">
+            {posts.length === 0 ? (
+              <p>No posts available</p>
+            ) : (
+              posts.map((post: any) => (
+                <div className="posts" key={post.id}>
+                  {post.image && <img className="post-image" src={`${post.image}`} />}
+                  {post.video && <video className="post-video" src={`${post.video}`} controls />}
+                  <div className="post-interact">
+                    <p className="caption">{post.caption}</p>
+                    <div>
+                      <button
+                        className={`heart-button ${likedPosts[post.id] || post.liked ? 'liked' : ''}`}
+                        onClick={() => likePost(post.id)}>
+                        &#10084;
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+    </>
+  );}
+/*
   return (
     <>
       <Header />
@@ -98,12 +120,10 @@ export default function Homepage() {
         <div>
           <div>
             <div className="post-container">
-              { posts.length === 0 ? (
-                <p> No post found</p>)
-                : (posts.map((post: any) => (
+              {(posts.map((post: any) => (
                   <div className="posts" key={post.id}>
                     {post.image && <img className="post-image" src={`${post.image}`} />}
-                    {post.video && <img className="post-video" src={`${post.video}`} />}
+                    {post.video && <video className="post-video" src={`${post.video}`} />}
                     <div className="post-interact">
                       <p className="caption"> {post.caption}</p>
                       <div>
@@ -123,4 +143,4 @@ export default function Homepage() {
       </div>
     </>
   )
-}
+}*/
